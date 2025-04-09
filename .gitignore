@@ -45,4 +45,3 @@ app.*.map.json
 /android/app/release
 /android/app/.cxx
 app/.cxx/
-.vscode/launch.json

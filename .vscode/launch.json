@@ -1,0 +1,143 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "[local] run_ios_app",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "iPhone"
+            ],
+            "env": {
+                "BASE_API_URL": "http://127.0.0.1:3001/api/v1/",
+                "BASE_WS_URL": "ws://127.0.0.1:3002/ws/"
+            }
+        },
+        {
+            "name": "[prod] run_ios_app",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "iPhone"
+            ]
+        },
+        {
+            "name": "[local] run_android_app-emulator",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "emulator-5554",
+                "--dart-define=BASE_API_URL=http://10.0.2.2:3001/api/v1/",
+                "--dart-define=BASE_WS_URL=ws://10.0.2.2:3002/ws/"
+            ]
+        },
+        {
+            "name": "[prod] run_android_app-emulator",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "emulator-5554"
+            ]
+        },
+        {
+            "name": "[local] run_linux_app",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "linux"
+            ],
+            "env": {
+                "BASE_API_URL": "http://127.0.0.1:3001/api/v1/",
+                "BASE_WS_URL": "ws://127.0.0.1:3002/ws/"
+            }
+        },
+        {
+            "name": "[prod] run_linux_app",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "linux"
+            ]
+        },
+        {
+            "name": "[local] run_windows_app",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "windows"
+            ],
+            "env": {
+                "BASE_API_URL": "http://127.0.0.1:3001/api/v1/",
+                "BASE_WS_URL": "ws://127.0.0.1:3002/ws/"
+            }
+        },
+        {
+            "name": "[prod] run_windows_app",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "windows"
+            ],
+        },
+        {
+            "name": "[prod] run_android_app-physical-device",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "112111542P001871"
+            ]
+        },
+        {
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "name": "[local] run_signalling_server",
+            "cwd": "${workspaceFolder}/server",
+            "program": "${workspaceFolder}/server/index.js",
+            "request": "launch",
+            "restart": true,
+            "runtimeExecutable": "nodemon",
+            "runtimeArgs": [
+                "--watch",
+                "index.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+    ],
+    "compounds": [
+        {
+            "name": "[local|COMPOUND] DEBUG LINUX+ANDROID-EMULATOR",
+            "configurations": [
+                "[local] run_android_app-emulator",
+                "[local] run_linux_app"
+            ]
+        },
+        {
+            "name": "[prod|COMPOUND] DEBUG LINUX+ANDROID-EMULATOR",
+            "configurations": [
+                "[prod] run_linux_app",
+                "[prod] run_android_app-emulator"
+            ]
+        }
+    ]
+}
