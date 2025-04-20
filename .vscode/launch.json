@@ -96,6 +96,30 @@
             ],
         },
         {
+            "name": "[local] run_webapp_app",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "chrome"
+            ],
+            "env": {
+                "BASE_API_URL": "http://127.0.0.1:3001/api/v1/",
+                "BASE_WS_URL": "ws://127.0.0.1:3002/ws/"
+            }
+        },
+        {
+            "name": "[prod] run_web_app",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "google-chrome"
+            ],
+        },
+        {
             "name": "[prod] run_android_app-physical-device",
             "type": "dart",
             "request": "launch",

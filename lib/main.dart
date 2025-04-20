@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:app/screens/home.dart';
+import 'package:app/screens/app_shell.dart';
 
 void main() {
   runApp(const App());
@@ -15,8 +15,9 @@ class App extends StatelessWidget {
       title: 'Cassaden',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        appBarTheme: AppBarTheme(toolbarHeight: 60),
       ),
-      home: const HomeScreen(),
+      home: const AppShellScreen(),
     );
   }
 }
