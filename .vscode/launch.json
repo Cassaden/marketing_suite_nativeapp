@@ -96,7 +96,7 @@
             ],
         },
         {
-            "name": "[local] run_webapp_app",
+            "name": "[local] run_web_app",
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
