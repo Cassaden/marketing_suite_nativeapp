@@ -5,7 +5,7 @@ import 'campaigns.dart';
 import 'contacts.dart';
 import 'messaging.dart';
 
-import 'app_shell/navigation_rail.dart';
+import 'app_shell/sidebar.dart';
 import 'app_shell/footer.dart';
 
 class AppShellScreen extends StatefulWidget {
@@ -17,10 +17,7 @@ class AppShellScreen extends StatefulWidget {
 
 class _AppShellScreenState extends State<AppShellScreen> {
   int _selectedIndex = 0;
-
-  NavigationRailLabelType labelType = NavigationRailLabelType.all;
-  final double _groupAlignment = -1.0;
-  final double _navigationRailMaxWidth = 256;
+  final double _sidebarMaxWidth = 256;
 
   final List<Widget Function()> _screens = [
     HomeScreen.new,
@@ -35,10 +32,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
       body: SafeArea(
         child: Row(
           children: <Widget>[
-            AppNavigationRail(
+            AppSidebar(
+              maxWidth: _sidebarMaxWidth,
               selectedIndex: _selectedIndex,
-              groupAlignment: _groupAlignment,
-              maxWidth: _navigationRailMaxWidth,
               onDestinationSelected:
                   (int index) => setState(() {
                     _selectedIndex = index;
@@ -47,10 +43,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
             Expanded(
               child: Column(
                 children: [
-                  Container(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    height: Theme.of(context).appBarTheme.toolbarHeight! + 7,
-                  ),
+                  Container(color: Theme.of(context).scaffoldBackgroundColor),
                   Divider(height: 1, thickness: 1, color: Colors.grey),
                   Expanded(
                     child: Container(
@@ -61,7 +54,12 @@ class _AppShellScreenState extends State<AppShellScreen> {
                             color: Theme.of(context).scaffoldBackgroundColor,
                             height: Theme.of(context).appBarTheme.toolbarHeight,
                           ),
-                          Expanded(child: _screens[_selectedIndex]()),
+                          Expanded(
+                            child: AnimatedSwitcher(
+                              duration: Duration(seconds: 1),
+                              child: _screens[_selectedIndex](),
+                            ),
+                          ),
                           AppFooter(),
                         ],
                       ),

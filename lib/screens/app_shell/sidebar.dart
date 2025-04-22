@@ -3,83 +3,94 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/ph.dart';
 
-class AppSidebarItem extends StatelessWidget {
-  final Widget icon;
-  final String label;
-
-  const AppSidebarItem({super.key, required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {},
-      child: Row(children: [icon, SizedBox(width: 4), Text(label)]),
-    );
-  }
-}
+import 'sidebar/sidebar_item.dart';
 
 class AppSidebar extends StatefulWidget {
-  const AppSidebar({super.key});
+  final int selectedIndex;
+  final double maxWidth;
+  final Function onDestinationSelected;
+
+  const AppSidebar({
+    super.key,
+    required this.selectedIndex,
+    required this.onDestinationSelected,
+    required this.maxWidth,
+  });
 
   @override
   State<AppSidebar> createState() => _AppSidebarState();
 }
 
 class _AppSidebarState extends State<AppSidebar> {
-  final double _maxWidth = 256;
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxWidth: _maxWidth),
+      constraints: BoxConstraints(maxWidth: widget.maxWidth),
       child: Row(
         children: [
-          Column(
-            children: [
-              Container(
-                clipBehavior: Clip.none,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1, color: Colors.grey),
-                  ),
-                ),
-                constraints: BoxConstraints(maxWidth: _maxWidth),
-                height: Theme.of(context).appBarTheme.toolbarHeight,
-                child: Center(child: Text('App Logo')),
-              ),
-              Column(
-                children: <Widget>[
-                  AppSidebarItem(icon: Iconify(Ph.circles_four), label: 'Home'),
-                  AppSidebarItem(
-                    icon: Iconify(Ph.chat_circle_dots),
-                    label: 'Chats',
-                  ),
-                  AppSidebarItem(
-                    icon: Iconify(Ph.address_book),
-                    label: 'Contacts',
-                  ),
-                  AppSidebarItem(
-                    icon: Iconify(Ph.megaphone),
-                    label: 'Campaigns',
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Container(
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  clipBehavior: Clip.none,
                   width: double.infinity,
-                  constraints: BoxConstraints(maxWidth: _maxWidth),
-                  padding: EdgeInsets.all(4),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ElevatedButton(child: Text('Sign out'), onPressed: () {}),
-                    ],
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 1, color: Colors.grey),
+                    ),
+                  ),
+                  constraints: BoxConstraints(maxWidth: widget.maxWidth - 1),
+                  height: Theme.of(context).appBarTheme.toolbarHeight,
+                  child: Center(child: Text('App Logo')),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    AppSidebarItem(
+                      icon: Iconify(Ph.circles_four),
+                      label: 'Home',
+                      index: 0,
+                      onDestinationSelected: widget.onDestinationSelected,
+                    ),
+                    AppSidebarItem(
+                      icon: Iconify(Ph.chat_circle_dots),
+                      label: 'Chats',
+                      index: 1,
+                      onDestinationSelected: widget.onDestinationSelected,
+                    ),
+                    AppSidebarItem(
+                      icon: Iconify(Ph.address_book),
+                      label: 'Contacts',
+                      index: 2,
+                      onDestinationSelected: widget.onDestinationSelected,
+                    ),
+                    AppSidebarItem(
+                      icon: Iconify(Ph.megaphone),
+                      label: 'Campaigns',
+                      index: 3,
+                      onDestinationSelected: widget.onDestinationSelected,
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    constraints: BoxConstraints(maxWidth: widget.maxWidth - 1),
+                    padding: EdgeInsets.all(4),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton(
+                          child: Text('Sign out'),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           VerticalDivider(width: 1, thickness: 1),
         ],
