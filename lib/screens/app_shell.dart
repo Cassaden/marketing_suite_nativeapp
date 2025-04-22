@@ -5,6 +5,7 @@ import 'campaigns.dart';
 import 'contacts.dart';
 import 'messaging.dart';
 
+import 'app_shell/navigation_rail.dart';
 import 'app_shell/footer.dart';
 
 class AppShellScreen extends StatefulWidget {
@@ -34,62 +35,15 @@ class _AppShellScreenState extends State<AppShellScreen> {
       body: SafeArea(
         child: Row(
           children: <Widget>[
-            NavigationRail(
-              extended: true,
+            AppNavigationRail(
               selectedIndex: _selectedIndex,
               groupAlignment: _groupAlignment,
+              maxWidth: _navigationRailMaxWidth,
               onDestinationSelected:
                   (int index) => setState(() {
                     _selectedIndex = index;
                   }),
-              leading: Container(
-                clipBehavior: Clip.none,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1, color: Colors.grey),
-                  ),
-                ),
-                constraints: BoxConstraints(maxWidth: _navigationRailMaxWidth),
-                height: Theme.of(context).appBarTheme.toolbarHeight,
-                child: Center(child: Text('App Logo')),
-              ),
-              destinations: const <NavigationRailDestination>[
-                NavigationRailDestination(
-                  icon: Icon(Icons.home_outlined),
-                  label: Text('Home'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.inbox_outlined),
-                  label: Text('Messaging'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.contact_page_outlined),
-                  label: Text('Contacts'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.announcement_outlined),
-                  label: Text('Campaigns'),
-                ),
-              ],
-              trailing: Expanded(
-                child: Container(
-                  width: double.infinity,
-                  constraints: BoxConstraints(
-                    maxWidth: _navigationRailMaxWidth,
-                  ),
-                  padding: EdgeInsets.all(4),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ElevatedButton(child: Text('Sign out'), onPressed: () {}),
-                    ],
-                  ),
-                ),
-              ),
             ),
-            VerticalDivider(width: 1, thickness: 1),
             Expanded(
               child: Column(
                 children: [
