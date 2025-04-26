@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'home.dart';
-import 'campaigns.dart';
-import 'contacts.dart';
-import 'messaging.dart';
+import '../../features/home.dart';
+import '../../features/campaigns.dart';
+import '../../features/contacts/ui/main.dart';
+import '../../features/messaging.dart';
 
 import 'app_shell/sidebar.dart';
 import 'app_shell/footer.dart';
@@ -44,7 +44,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
               child: Column(
                 children: [
                   Container(color: Theme.of(context).scaffoldBackgroundColor),
-                  Divider(height: 1, thickness: 1, color: Colors.grey),
                   Expanded(
                     child: Container(
                       color: Theme.of(context).scaffoldBackgroundColor,

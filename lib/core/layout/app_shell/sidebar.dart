@@ -34,14 +34,25 @@ class _AppSidebarState extends State<AppSidebar> {
                 Container(
                   clipBehavior: Clip.none,
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1, color: Colors.grey),
-                    ),
-                  ),
+                  padding: EdgeInsets.all(8),
                   constraints: BoxConstraints(maxWidth: widget.maxWidth - 1),
                   height: Theme.of(context).appBarTheme.toolbarHeight,
-                  child: Center(child: Text('App Logo')),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.grey, width: 0.5),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    child: Center(
+                      child: Text(
+                        'App Logo',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -50,24 +61,28 @@ class _AppSidebarState extends State<AppSidebar> {
                       icon: Iconify(Ph.circles_four),
                       label: 'Home',
                       index: 0,
+                      selectedIndex: widget.selectedIndex,
                       onDestinationSelected: widget.onDestinationSelected,
                     ),
                     AppSidebarItem(
                       icon: Iconify(Ph.chat_circle_dots),
                       label: 'Chats',
                       index: 1,
+                      selectedIndex: widget.selectedIndex,
                       onDestinationSelected: widget.onDestinationSelected,
                     ),
                     AppSidebarItem(
                       icon: Iconify(Ph.address_book),
                       label: 'Contacts',
                       index: 2,
+                      selectedIndex: widget.selectedIndex,
                       onDestinationSelected: widget.onDestinationSelected,
                     ),
                     AppSidebarItem(
                       icon: Iconify(Ph.megaphone),
                       label: 'Campaigns',
                       index: 3,
+                      selectedIndex: widget.selectedIndex,
                       onDestinationSelected: widget.onDestinationSelected,
                     ),
                   ],
@@ -92,7 +107,7 @@ class _AppSidebarState extends State<AppSidebar> {
               ],
             ),
           ),
-          VerticalDivider(width: 1, thickness: 1),
+          VerticalDivider(width: 0.5, thickness: 0.5),
         ],
       ),
     );
