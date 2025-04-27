@@ -4,6 +4,7 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/ph.dart';
 
 import 'sidebar/sidebar_item.dart';
+import 'sidebar/trailing.dart';
 
 class AppSidebar extends StatefulWidget {
   final int selectedIndex;
@@ -87,23 +88,7 @@ class _AppSidebarState extends State<AppSidebar> {
                     ),
                   ],
                 ),
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    constraints: BoxConstraints(maxWidth: widget.maxWidth - 1),
-                    padding: EdgeInsets.all(4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ElevatedButton(
-                          child: Text('Sign out'),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                Expanded(child: SidebarTrailing(maxWidth: widget.maxWidth)),
               ],
             ),
           ),

@@ -1,8 +1,9 @@
 import 'dart:developer';
+import 'package:app/core/services/api.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:openapi/api.dart';
+import 'package:openapi/api.dart' as openapi;
 
 class ContactsScreen extends StatefulWidget {
   const ContactsScreen({super.key});
@@ -12,55 +13,40 @@ class ContactsScreen extends StatefulWidget {
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
+  List<openapi.Contact> _contacts = [];
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
-    const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NzkxNjgzLCJpYXQiOjE3NDU3MDUyODMsImp0aSI6ImYzZTlmYmZlOTIyNTQ1YWFhYTQ3YzI1ODczZDY5MDRkIiwidXNlcl9pZCI6MX0.xqELpW-R72zXxf-hx0_1mF5nGeUJfxA8ft-hXsK9v1I';
-
-    ApiClient apiClient = ApiClient(basePath: 'http://localhost:8000');
-
-    apiClient.addDefaultHeader('Authorization', 'Bearer $token');
-    apiClient.addDefaultHeader('Content-Type', 'application/json');
-
-    testApi(apiClient);
-  }
-
-  Future<void> testApi(ApiClient apiClient) async {
-    final campaignsApiInstance = CampaignsApi();
-    final authApiInstance = AuthApi();
-
-    try {
-      campaignsApiInstance.campaignsList();
-      log((await authApiInstance.authUserProfilesList()).toString());
-      final path = r'/auth/login/';
-
-      Object postBody = {"username": "sayo", "password": "password"};
-
-      final queryParams = <QueryParam>[];
-      final headerParams = <String, String>{};
-      final formParams = <String, String>{};
-
-      const contentTypes = <String>[];
-
-      log(
-        (await apiClient.invokeAPI(
-          path,
-          'POST',
-          queryParams,
-          postBody,
-          headerParams,
-          formParams,
-          contentTypes.isEmpty ? null : contentTypes.first,
-        )).body.toString(),
-      );
-    } catch (e) {
-      log('Exception when calling CampaignsApi->campaignsList: $e\n');
-    }
+    _initialize();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Contacts."));
+    return _isLoading
+        ? Center(child: CircularProgressIndicator())
+        : Center(
+          child: ListView.separated(
+            itemCount: _contacts.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Text(_contacts[index].phoneNumber);
+            },
+            separatorBuilder: (context, index) => SizedBox(height: 4),
+          ),
+        );
+  }
+
+  Future<void> _initialize() async {
+    try {
+      List<openapi.Contact> contacts =
+          await openapi.ContactsApi(ApiClient.getInstance()).contactsList() ??
+          [];
+
+      setState(() => _contacts = contacts);
+      setState(() => _isLoading = false);
+    } on openapi.ApiException catch (error, stackTrace) {
+      log('$error \n $stackTrace');
+    }
   }
 }
