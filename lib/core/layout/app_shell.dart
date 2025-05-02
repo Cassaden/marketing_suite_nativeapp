@@ -22,7 +22,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   final List<Widget Function()> _screens = [
     HomeScreen.new,
     MessagingScreen.new,
-    ContactsScreen.new,
+    ContactsScreenManager.new,
     CampaignsScreen.new,
   ];
 

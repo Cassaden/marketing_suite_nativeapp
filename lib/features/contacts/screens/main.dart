@@ -6,14 +6,14 @@ import 'package:openapi/api.dart' as openapi;
 import 'package:app/core/services/api.dart';
 import 'package:app/extensions/error_dialog.dart';
 
-class ContactsScreen extends StatefulWidget {
-  const ContactsScreen({super.key});
+class ContactsScreenManager extends StatefulWidget {
+  const ContactsScreenManager({super.key});
 
   @override
-  State<ContactsScreen> createState() => _ContactsScreenState();
+  State<ContactsScreenManager> createState() => _ContactsScreenManagerState();
 }
 
-class _ContactsScreenState extends State<ContactsScreen> {
+class _ContactsScreenManagerState extends State<ContactsScreenManager> {
   List<openapi.Contact> _contacts = [];
   bool _isLoading = true;
 

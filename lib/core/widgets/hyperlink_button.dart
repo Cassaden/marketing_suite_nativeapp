@@ -36,6 +36,7 @@ class HyperLinkButton extends StatelessWidget {
         style: TextStyle(
           color: Colors.blue,
           decoration: TextDecoration.underline,
+          decorationColor: Colors.blue,
         ),
       ),
     );
