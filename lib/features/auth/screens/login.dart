@@ -10,7 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Padding(
             padding: EdgeInsets.only(bottom: 50, right: 50, left: 50, top: 20),
             child: Form(
+              key: _formKey,
               child: Column(
                 children: <Widget>[
                   Center(child: Text('Login')),
@@ -64,8 +65,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       FilledButton(
                         onPressed: () {
-                          if (_key.currentState != null &&
-                              !_key.currentState!.validate()) {
+                          if (_formKey.currentState != null &&
+                              !_formKey.currentState!.validate()) {
+                            print(_formKey.currentState.toString());
                             print("Valid");
                           }
                         },
