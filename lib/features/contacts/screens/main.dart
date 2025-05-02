@@ -1,9 +1,10 @@
 import 'dart:developer';
-import 'package:app/core/services/api.dart';
 
 import 'package:flutter/material.dart';
-
 import 'package:openapi/api.dart' as openapi;
+
+import 'package:app/core/services/api.dart';
+import 'package:app/extensions/error_dialog.dart';
 
 class ContactsScreen extends StatefulWidget {
   const ContactsScreen({super.key});
@@ -47,6 +48,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
       setState(() => _isLoading = false);
     } on openapi.ApiException catch (error, stackTrace) {
       log('$error \n $stackTrace');
+
+      context.showErrorDialog(
+        error.toString(),
+        stackTrace: stackTrace.toString(),
+      );
+
+      setState(() => _isLoading = false);
     }
   }
 }
