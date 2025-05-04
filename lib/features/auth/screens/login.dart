@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:app/core/widgets/hyperlink_button.dart';
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -11,9 +9,36 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  OverlayEntry? _overlayEntry;
+
+  bool _isLoading = true;
+
+  _showLoadingOverlay(context) {
+    if (_isLoading) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _overlayEntry = OverlayEntry(
+          builder: (BuildContext context) {
+            return Positioned(
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              child: Container(
+                color: Colors.black.withValues(alpha: 0.7),
+                child: const Center(child: CircularProgressIndicator()),
+              ),
+            );
+          },
+        );
+
+        Overlay.of(context).insert(_overlayEntry!);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    _showLoadingOverlay(context);
     return Container(
       alignment: Alignment.center,
       color: Colors.grey,
@@ -32,54 +57,66 @@ class _LoginScreenState extends State<LoginScreen> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  Center(child: Text('Login')),
+                  Center(child: Container()),
                   Column(
                     children: <Widget>[
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your email',
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 16,
                         ),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter your email',
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your password',
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 16,
                         ),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password.';
-                          }
-                          return null;
-                        },
+                        child: TextFormField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter your password',
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(height: 8),
-                  Column(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/register');
+                        },
+                        child: Text('Create account'),
+                      ),
                       FilledButton(
                         onPressed: () {
                           if (_formKey.currentState != null &&
                               !_formKey.currentState!.validate()) {
                             print(_formKey.currentState.toString());
-                            print("Valid");
                           }
                         },
                         child: Text('Login'),
-                      ),
-                      SizedBox(height: 4),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: HyperLinkButton(
-                          label: "Don't have an account?",
-                          onPressed: () {},
-                        ),
                       ),
                     ],
                   ),

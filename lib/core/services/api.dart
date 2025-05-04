@@ -1,5 +1,7 @@
 import 'package:openapi/api.dart' as openapi;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class ApiClient extends openapi.ApiClient {
   static openapi.ApiClient? clientInstance;
 
@@ -8,6 +10,7 @@ class ApiClient extends openapi.ApiClient {
       final authentication = openapi.HttpBearerAuth();
       authentication.accessToken =
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NzkxNjgzLCJpYXQiOjE3NDU3MDUyODMsImp0aSI6ImYzZTlmYmZlOTIyNTQ1YWFhYTQ3YzI1ODczZDY5MDRkIiwidXNlcl9pZCI6MX0.xqELpW-R72zXxf-hx0_1mF5nGeUJfxA8ft-hXsK9v1I';
+
       clientInstance = openapi.ApiClient(
         basePath: 'http://localhost:8000',
         authentication: authentication,
@@ -16,4 +19,14 @@ class ApiClient extends openapi.ApiClient {
 
     return clientInstance!;
   }
+
+  static openapi.ApiClient get instance => getInstance();
+
+  static loginUser() {}
+
+  static logoutUser() {}
+
+  static registerUser() {}
+
+  static refreshUserToken() {}
 }
