@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:app/core/services/auth.dart';
+import 'package:app/core/models/auth.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -9,32 +12,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _username = '';
+  String _password = '';
+
   OverlayEntry? _overlayEntry;
-
-  bool _isLoading = true;
-
-  _showLoadingOverlay(context) {
-    if (_isLoading) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _overlayEntry = OverlayEntry(
-          builder: (BuildContext context) {
-            return Positioned(
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              child: Container(
-                color: Colors.black.withValues(alpha: 0.7),
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-            );
-          },
-        );
-
-        Overlay.of(context).insert(_overlayEntry!);
-      });
-    }
-  }
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           vertical: 16,
                         ),
                         child: TextFormField(
+                          onSaved: (value) => _username = value ?? '',
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter your email',
@@ -84,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           vertical: 16,
                         ),
                         child: TextFormField(
+                          onSaved: (value) => _password = value ?? '',
                           obscureText: true,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -111,10 +95,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       FilledButton(
                         onPressed: () {
-                          if (_formKey.currentState != null &&
+                          if (_formKey.currentState == null ||
                               !_formKey.currentState!.validate()) {
-                            print(_formKey.currentState.toString());
+                            return;
                           }
+
+                          _formKey.currentState!.save();
+                          _login();
                         },
                         child: Text('Login'),
                       ),
@@ -127,5 +114,47 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  _showLoadingOverlay(context) {
+    if (_isLoading) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _overlayEntry = OverlayEntry(
+          builder: (BuildContext context) {
+            return Positioned(
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              child: Container(
+                color: Colors.black.withValues(alpha: 0.7),
+                child: const Center(child: CircularProgressIndicator()),
+              ),
+            );
+          },
+        );
+
+        Overlay.of(context).insert(_overlayEntry!);
+      });
+    }
+  }
+
+  _login() {
+    setState(() {
+      _isLoading = true;
+    });
+
+    AuthClient.getInstance().login(
+      UserLogin(username: _username, password: _password),
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
   }
 }

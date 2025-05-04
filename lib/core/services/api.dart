@@ -1,18 +1,20 @@
 import 'package:openapi/api.dart' as openapi;
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app/core/constants/api_uris.dart';
+import 'package:app/core/repositories/auth.dart';
 
 class ApiClient extends openapi.ApiClient {
+  ApiClient._();
+
   static openapi.ApiClient? clientInstance;
 
   static openapi.ApiClient getInstance() {
     if (clientInstance == null) {
       final authentication = openapi.HttpBearerAuth();
-      authentication.accessToken =
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NzkxNjgzLCJpYXQiOjE3NDU3MDUyODMsImp0aSI6ImYzZTlmYmZlOTIyNTQ1YWFhYTQ3YzI1ODczZDY5MDRkIiwidXNlcl9pZCI6MX0.xqELpW-R72zXxf-hx0_1mF5nGeUJfxA8ft-hXsK9v1I';
+      authentication.accessToken = AuthRepository.getCurrentAccessToken();
 
       clientInstance = openapi.ApiClient(
-        basePath: 'http://localhost:8000',
+        basePath: ApiUris.baseUrl,
         authentication: authentication,
       );
     }
@@ -21,12 +23,4 @@ class ApiClient extends openapi.ApiClient {
   }
 
   static openapi.ApiClient get instance => getInstance();
-
-  static loginUser() {}
-
-  static logoutUser() {}
-
-  static registerUser() {}
-
-  static refreshUserToken() {}
 }

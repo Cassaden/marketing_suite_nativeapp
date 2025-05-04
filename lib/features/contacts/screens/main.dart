@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart' as openapi;
 
 import 'package:app/core/services/api.dart';
-import 'package:app/extensions/error_dialog.dart';
+import 'package:app/extensions/build_context.dart';
 
 class ContactsScreenManager extends StatefulWidget {
   const ContactsScreenManager({super.key});
