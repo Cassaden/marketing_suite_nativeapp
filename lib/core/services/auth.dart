@@ -31,8 +31,12 @@ class AuthClient {
             final Map<String, dynamic> userLoginResponse = jsonDecode(
               response.body,
             );
-            print(userLoginResponse.toString());
-            //AuthRepository.setCurrentLoggedInUser(userProfile);
+
+            final String accessToken = userLoginResponse['data']['access'];
+            final String refreshToken = userLoginResponse['data']['refresh'];
+
+            AuthRepository.setCurrentAccessToken(accessToken);
+            AuthRepository.setCurrentRefreshToken(refreshToken);
           } else {
             throw Exception('Failed to login');
           }
@@ -154,13 +158,16 @@ class AuthClient {
         });
   }
 
-  refreshToken() {
+  refreshAccessToken() {
     http
         .post(
           Uri.parse(ApiUris.refresh),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
+          body: jsonEncode({
+            'refresh': AuthRepository.getCurrentRefreshToken(),
+          }),
         )
         .then((response) {
           if (response.statusCode == 200) {

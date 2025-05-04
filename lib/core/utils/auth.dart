@@ -1,3 +1,6 @@
+import 'package:app/core/models/auth.dart';
+import 'package:app/core/repositories/auth.dart';
+
 class AuthUtils {
   static final AuthUtils _instance = AuthUtils._();
 
@@ -7,7 +10,15 @@ class AuthUtils {
     return _instance;
   }
 
-  bool isUserAuthenticated() {
+  Future<bool> isUserAuthenticated() async {
+    final UserProfile? userProfile =
+        await AuthRepository.getCurrentLoggedInUser();
+    final String? accessToken = await AuthRepository.getCurrentAccessToken();
+
+    if (userProfile != null && accessToken != null) {
+      return true;
+    }
+
     return false;
   }
 }

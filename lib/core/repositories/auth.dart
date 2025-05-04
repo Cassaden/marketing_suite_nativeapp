@@ -63,4 +63,28 @@ class AuthRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('currentAccessToken');
   }
+
+  static Future<String> getCurrentRefreshToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final String? refreshToken = prefs.getString('currentRefreshToken');
+
+    if (refreshToken != null) {
+      return refreshToken;
+    }
+
+    throw AuthRepositoryException(
+      AuthRepositoryExceptionErrorCode.tokenNotFound,
+    );
+  }
+
+  static Future<void> setCurrentRefreshToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('currentRefreshToken', token);
+  }
+
+  static Future<void> clearCurrentRefreshToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('currentRefreshToken');
+  }
 }
