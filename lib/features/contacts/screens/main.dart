@@ -40,9 +40,9 @@ class _ContactsScreenManagerState extends State<ContactsScreenManager> {
 
   Future<void> _initialize() async {
     try {
+      openapi.ApiClient client = await ApiClient.getInstance();
       List<openapi.Contact> contacts =
-          await openapi.ContactsApi(ApiClient.getInstance()).contactsList() ??
-          [];
+          await openapi.ContactsApi(client).contactsList() ?? [];
 
       setState(() => _contacts = contacts);
       setState(() => _isLoading = false);

@@ -8,10 +8,10 @@ class ApiClient extends openapi.ApiClient {
 
   static openapi.ApiClient? clientInstance;
 
-  static openapi.ApiClient getInstance() {
+  static Future<openapi.ApiClient> getInstance() async {
     if (clientInstance == null) {
       final authentication = openapi.HttpBearerAuth();
-      authentication.accessToken = AuthRepository.getCurrentAccessToken();
+      authentication.accessToken = await AuthRepository.getCurrentAccessToken();
 
       clientInstance = openapi.ApiClient(
         basePath: ApiUris.baseUrl,
@@ -22,5 +22,5 @@ class ApiClient extends openapi.ApiClient {
     return clientInstance!;
   }
 
-  static openapi.ApiClient get instance => getInstance();
+  static Future<openapi.ApiClient> get instance => getInstance();
 }
