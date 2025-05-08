@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:app/core/layout/app_shell.dart';
+import 'package:app/core/layout/app_loading.dart';
+
 import 'package:app/core/theme.dart';
 import 'package:app/core/utils/auth.dart';
 
@@ -52,14 +54,5 @@ class _AppState extends State<App> {
         : _isUserAuthenticated
         ? const AppShellScreen()
         : const LoginScreen();
-  }
-}
-
-class AppLoadingScreen extends StatelessWidget {
-  const AppLoadingScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: CircularProgressIndicator());
   }
 }
