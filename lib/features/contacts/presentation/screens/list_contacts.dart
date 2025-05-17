@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:app/features/contacts/presentation/widgets/contact_list_item.dart';
-import 'package:app/features/contacts/data/blocs/list_contacts_cubit.dart';
+import 'package:app/features/contacts/presentation/blocs/list_contacts.cubit.dart';
 
 class ListContactsScreen extends StatefulWidget {
   const ListContactsScreen({super.key});

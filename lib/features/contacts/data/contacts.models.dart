@@ -1,4 +1,4 @@
-import 'helpers.dart';
+import '../../../core/models/helpers.dart';
 
 class Contact {
   /// Returns a new [Contact] instance.
