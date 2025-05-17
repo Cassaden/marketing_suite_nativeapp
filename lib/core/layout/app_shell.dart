@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../features/home.dart';
 import '../../features/campaigns.dart';
-import '../../features/contacts/screens/main.dart';
+import '../../features/contacts/presentation/screens/main.dart';
 import '../../features/messaging.dart';
 
 import 'app_shell/sidebar.dart';
