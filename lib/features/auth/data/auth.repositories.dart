@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:app/core/exceptions.dart';
-import 'package:app/core/models/auth.dart';
+import 'package:app/features/auth/data/auth.models.dart';
 
 class AuthRepository {
   static final AuthRepository _instance = AuthRepository._internal();
@@ -86,5 +86,15 @@ class AuthRepository {
   static Future<void> clearCurrentRefreshToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('currentRefreshToken');
+  }
+
+  static Future<bool> isUserAuthenticated() async {
+    final String? accessToken = await AuthRepository.getCurrentAccessToken();
+
+    if (accessToken != null) {
+      return true;
+    }
+
+    return false;
   }
 }

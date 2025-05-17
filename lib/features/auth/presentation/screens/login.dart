@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:app/core/services/auth.dart';
-import 'package:app/core/models/auth.dart';
+import 'package:app/features/auth/data/auth.services.dart';
+import 'package:app/features/auth/data/auth.models.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
-    AuthClient.getInstance().login(
+    AuthService.getInstance().login(
       UserLogin(username: _username, password: _password),
     );
 

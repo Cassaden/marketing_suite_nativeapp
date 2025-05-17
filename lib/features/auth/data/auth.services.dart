@@ -2,16 +2,17 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'package:app/core/models/auth.dart';
-import 'package:app/core/repositories/auth.dart';
+import 'package:app/features/auth/data/auth.models.dart';
 import 'package:app/core/constants/api_uris.dart';
 
-class AuthClient {
-  static AuthClient instance = AuthClient._();
+import 'package:app/features/auth/data/auth.repositories.dart';
 
-  AuthClient._();
+class AuthService {
+  static AuthService instance = AuthService._();
 
-  static AuthClient getInstance() {
+  AuthService._();
+
+  static AuthService getInstance() {
     return instance;
   }
 

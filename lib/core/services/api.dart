@@ -1,7 +1,7 @@
 import 'package:openapi/api.dart' as openapi;
 
 import 'package:app/core/constants/api_uris.dart';
-import 'package:app/core/repositories/auth.dart';
+import 'package:app/features/auth/data/auth.repositories.dart';
 
 class ApiClient extends openapi.ApiClient {
   ApiClient._();
