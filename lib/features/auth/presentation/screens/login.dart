@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:app/features/auth/data/auth.services.dart';
-import 'package:app/features/auth/data/auth.models.dart';
+import 'package:app/features/auth/domain/auth.use_cases.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     AuthService.getInstance().login(
-      UserLogin(username: _username, password: _password),
+      LoginUseCase(username: _username, password: _password),
     );
 
     setState(() {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:app/features/auth/data/auth.models.dart';
+import 'package:app/features/auth/domain/auth.use_cases.dart';
 import 'package:app/core/constants/api_uris.dart';
 
 import 'package:app/features/auth/data/auth.repositories.dart';
@@ -16,8 +17,8 @@ class AuthService {
     return instance;
   }
 
-  login(UserLogin userLogin) {
-    Map<String, dynamic> userMap = userLogin.toMap();
+  login(LoginUseCase LoginUseCase) {
+    Map<String, dynamic> userMap = LoginUseCase.toMap();
 
     http
         .post(
@@ -29,12 +30,12 @@ class AuthService {
         )
         .then((response) {
           if (response.statusCode == 200) {
-            final Map<String, dynamic> userLoginResponse = jsonDecode(
+            final Map<String, dynamic> LoginUseCaseResponse = jsonDecode(
               response.body,
             );
 
-            final String accessToken = userLoginResponse['data']['access'];
-            final String refreshToken = userLoginResponse['data']['refresh'];
+            final String accessToken = LoginUseCaseResponse['data']['access'];
+            final String refreshToken = LoginUseCaseResponse['data']['refresh'];
 
             AuthRepository.setCurrentAccessToken(accessToken);
             AuthRepository.setCurrentRefreshToken(refreshToken);

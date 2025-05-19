@@ -97,4 +97,8 @@ class AuthRepository {
 
     return false;
   }
+
+  static Future<User> login() async {
+    throw UnimplementedError();
+  }
 }
