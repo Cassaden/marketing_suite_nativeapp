@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:app/features/auth/data/auth.services.dart';
-import 'package:app/features/auth/domain/auth.use_cases.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:app/features/auth/presentation/blocs/login/cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,15 +13,12 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   String _username = '';
   String _password = '';
 
-  OverlayEntry? _overlayEntry;
-  bool _isLoading = false;
-
   @override
   Widget build(BuildContext context) {
-    _showLoadingOverlay(context);
     return Container(
       alignment: Alignment.center,
       color: Colors.grey,
@@ -101,7 +99,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
 
                           _formKey.currentState!.save();
-                          _login();
+
+                          context.read<LoginCubit>().login(
+                            _username,
+                            _password,
+                          );
                         },
                         child: Text('Login'),
                       ),
@@ -114,47 +116,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  _showLoadingOverlay(context) {
-    if (_isLoading) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _overlayEntry = OverlayEntry(
-          builder: (BuildContext context) {
-            return Positioned(
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              child: Container(
-                color: Colors.black.withValues(alpha: 0.7),
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-            );
-          },
-        );
-
-        Overlay.of(context).insert(_overlayEntry!);
-      });
-    }
-  }
-
-  _login() {
-    setState(() {
-      _isLoading = true;
-    });
-
-    AuthService.getInstance().login(
-      LoginUseCase(username: _username, password: _password),
-    );
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (_overlayEntry != null) {
-      _overlayEntry!.remove();
-      _overlayEntry = null;
-    }
   }
 }

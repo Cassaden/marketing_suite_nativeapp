@@ -2,11 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'package:app/features/auth/data/auth.models.dart';
-import 'package:app/features/auth/domain/auth.use_cases.dart';
 import 'package:app/core/constants/api_uris.dart';
-
-import 'package:app/features/auth/data/auth.repositories.dart';
 
 class AuthService {
   static AuthService instance = AuthService._();
@@ -17,35 +13,27 @@ class AuthService {
     return instance;
   }
 
-  login(LoginUseCase LoginUseCase) {
-    Map<String, dynamic> userMap = LoginUseCase.toMap();
-
+  Map<String, dynamic> login(String username, String password) {
     http
         .post(
           Uri.parse(ApiUris.login),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
-          body: jsonEncode(userMap),
+          body: jsonEncode({'username': username, 'password': password}),
         )
         .then((response) {
           if (response.statusCode == 200) {
-            final Map<String, dynamic> LoginUseCaseResponse = jsonDecode(
-              response.body,
-            );
-
-            final String accessToken = LoginUseCaseResponse['data']['access'];
-            final String refreshToken = LoginUseCaseResponse['data']['refresh'];
-
-            AuthRepository.setCurrentAccessToken(accessToken);
-            AuthRepository.setCurrentRefreshToken(refreshToken);
+            final Map<String, dynamic> responseData = jsonDecode(response.body);
+            return responseData;
           } else {
             throw Exception('Failed to login');
           }
         });
+    throw Exception('Failed to login again.');
   }
 
-  logout() {
+  Map<String, dynamic> logout() {
     http
         .post(
           Uri.parse(ApiUris.logout),
@@ -55,36 +43,50 @@ class AuthService {
         )
         .then((response) {
           if (response.statusCode == 200) {
-            AuthRepository.clearCurrentLoggedInUser();
+            Map<String, dynamic> jsonData = jsonDecode(response.body);
+            return jsonData;
           } else {
-            throw Exception('Failed to logout');
+            throw Exception('Failed to logout.');
           }
         });
+    throw Exception('Failed to logout');
   }
 
-  register(UserRegistration userRegistration) {
-    Map<String, dynamic> userMap = userRegistration.toMap();
-
+  Map<String, dynamic> register({
+    required String username,
+    required String firstName,
+    String lastName = '',
+    required String password1,
+    required String password2,
+    required String email,
+  }) {
     http
         .post(
           Uri.parse(ApiUris.register),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
-          body: userMap,
+          body: {
+            username: username,
+            firstName: firstName,
+            lastName: lastName,
+            password1: password1,
+            password2: password2,
+            email: email,
+          },
         )
         .then((response) {
           if (response.statusCode == 200) {
-            final Map<String, dynamic> userMap = jsonDecode(response.body);
-            final UserProfile userProfile = UserProfile.fromMap(userMap);
-            AuthRepository.setCurrentLoggedInUser(userProfile);
+            final Map<String, dynamic> responseData = jsonDecode(response.body);
+            return responseData;
           } else {
             throw Exception('Failed to registration');
           }
         });
+    throw Exception('Failed to login.');
   }
 
-  resetPassword(String email) {
+  Map<String, dynamic> resetPassword(String email) {
     http
         .post(
           Uri.parse(ApiUris.resetPassword),
@@ -95,32 +97,16 @@ class AuthService {
         )
         .then((response) {
           if (response.statusCode == 200) {
-            print('Reset password email sent');
+            Map<String, dynamic> responseData = jsonDecode(response.body);
+            return responseData;
           } else {
             throw Exception('Failed to send reset password email');
           }
         });
+    throw Exception('Failed to send reset password email');
   }
 
-  verifyEmail(String email) {
-    http
-        .post(
-          Uri.parse(ApiUris.verifyEmail),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode({'email': email}),
-        )
-        .then((response) {
-          if (response.statusCode == 200) {
-            print('Email verified');
-          } else {
-            throw Exception('Failed to verify email');
-          }
-        });
-  }
-
-  changePassword(String oldPassword, String newPassword) {
+  Map<String, dynamic> changePassword(String oldPassword, String newPassword) {
     http
         .post(
           Uri.parse(ApiUris.changePassword),
@@ -134,14 +120,16 @@ class AuthService {
         )
         .then((response) {
           if (response.statusCode == 200) {
-            print('Password changed');
+            Map<String, dynamic> responseData = jsonDecode(response.body);
+            return responseData;
           } else {
             throw Exception('Failed to change password');
           }
         });
+    throw Exception('Failed to set password.');
   }
 
-  getUserProfile() {
+  Map<String, dynamic> getUserProfile() {
     http
         .get(
           Uri.parse(ApiUris.getUserProfile),
@@ -151,34 +139,32 @@ class AuthService {
         )
         .then((response) {
           if (response.statusCode == 200) {
-            final Map<String, dynamic> userMap = jsonDecode(response.body);
-            final UserProfile userProfile = UserProfile.fromMap(userMap);
-            AuthRepository.setCurrentLoggedInUser(userProfile);
+            final Map<String, dynamic> responseData = jsonDecode(response.body);
+            return responseData;
           } else {
             throw Exception('Failed to get user profile');
           }
         });
+    throw Exception('Failed to get user profile.');
   }
 
-  refreshAccessToken() {
+  Map<String, dynamic> refreshAccessToken(String currentRefreshToken) {
     http
         .post(
           Uri.parse(ApiUris.refresh),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
-          body: jsonEncode({
-            'refresh': AuthRepository.getCurrentRefreshToken(),
-          }),
+          body: jsonEncode({'refresh': currentRefreshToken}),
         )
         .then((response) {
           if (response.statusCode == 200) {
-            final Map<String, dynamic> tokenMap = jsonDecode(response.body);
-            final String accessToken = tokenMap['access'];
-            AuthRepository.setCurrentAccessToken(accessToken);
+            final Map<String, dynamic> responseData = jsonDecode(response.body);
+            return responseData;
           } else {
             throw Exception('Failed to refresh token');
           }
         });
+    throw Exception('Failed to refresh token.');
   }
 }

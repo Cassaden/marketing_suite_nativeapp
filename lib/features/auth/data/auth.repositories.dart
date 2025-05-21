@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:app/core/exceptions.dart';
-import 'package:app/features/auth/data/auth.models.dart';
+import 'package:app/features/auth/exceptions.dart';
 
-class AuthRepository {
+import 'package:app/features/auth/data/auth.models.dart';
+import 'package:app/features/auth/domain/auth.repositories.dart' as base;
+
+class AuthRepository implements base.AuthRepository {
   static final AuthRepository _instance = AuthRepository._internal();
 
   factory AuthRepository() {
@@ -14,33 +16,33 @@ class AuthRepository {
 
   AuthRepository._internal();
 
-  static Future<UserProfile?> getCurrentLoggedInUser() async {
+  Future<User> getCurrentLoggedInUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final String? currentLoggedInUser = prefs.getString('currentLoggedInUser');
 
     if (currentLoggedInUser != null) {
       final Map<String, dynamic> userMap = jsonDecode(currentLoggedInUser);
-      final UserProfile userProfile = UserProfile.fromMap(userMap);
+      final User userProfile = User.fromMap(userMap);
       return userProfile;
     }
 
-    return null;
+    throw NoLoggedInUserFoundException();
   }
 
-  static Future<void> setCurrentLoggedInUser(UserProfile userProfile) async {
+  Future<void> setCurrentLoggedInUser(covariant User userProfile) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final String userProfileString = jsonEncode(userProfile.toMap());
     await prefs.setString('currentLoggedInUser', userProfileString);
   }
 
-  static Future<void> clearCurrentLoggedInUser() async {
+  Future<void> clearCurrentLoggedInUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('currentLoggedInUser');
   }
 
-  static Future<String> getCurrentAccessToken() async {
+  Future<String> getCurrentAccessToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final String? authToken = prefs.getString('currentAccessToken');
@@ -49,22 +51,20 @@ class AuthRepository {
       return authToken;
     }
 
-    throw AuthRepositoryException(
-      AuthRepositoryExceptionErrorCode.tokenNotFound,
-    );
+    throw NoAccessTokenFoundException();
   }
 
-  static Future<void> setCurrentAccessToken(String token) async {
+  Future<void> setCurrentAccessToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('currentAccessToken', token);
   }
 
-  static Future<void> clearCurrentAccessToken() async {
+  Future<void> clearCurrentAccessToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('currentAccessToken');
   }
 
-  static Future<String> getCurrentRefreshToken() async {
+  Future<String> getCurrentRefreshToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final String? refreshToken = prefs.getString('currentRefreshToken');
@@ -73,23 +73,21 @@ class AuthRepository {
       return refreshToken;
     }
 
-    throw AuthRepositoryException(
-      AuthRepositoryExceptionErrorCode.tokenNotFound,
-    );
+    throw NoRefreshTokenFoundException();
   }
 
-  static Future<void> setCurrentRefreshToken(String token) async {
+  Future<void> setCurrentRefreshToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('currentRefreshToken', token);
   }
 
-  static Future<void> clearCurrentRefreshToken() async {
+  Future<void> clearCurrentRefreshToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('currentRefreshToken');
   }
 
-  static Future<bool> isUserAuthenticated() async {
-    final String? accessToken = await AuthRepository.getCurrentAccessToken();
+  Future<bool> isUserAuthenticated() async {
+    final String? accessToken = await getCurrentAccessToken();
 
     if (accessToken != null) {
       return true;
@@ -98,7 +96,7 @@ class AuthRepository {
     return false;
   }
 
-  static Future<User> login(UserLoginDetails) async {
+  Future<User> login(String username, String password) async {
     throw UnimplementedError();
   }
 }

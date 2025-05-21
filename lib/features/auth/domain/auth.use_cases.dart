@@ -1,59 +1,16 @@
-import 'dart:convert';
+import 'auth.entities.dart';
+import 'auth.models.dart';
+import 'auth.repositories.dart';
 
-class LoginUseCase {
-  String? username;
-  String? email;
-  String? password;
+class UserLoginUseCase {
+  AuthRepository repository;
+  UserLoginRequest request;
 
-  LoginUseCase({this.username, this.email, this.password});
+  UserLoginUseCase(this.request, {required this.repository});
 
-  LoginUseCase.fromJson(String json) {
-    LoginUseCase.fromMap(jsonDecode(json));
-  }
+  Future<User> execute() async {
+    User user = await repository.login(request.username!, request.password!);
 
-  LoginUseCase.fromMap(Map<String, dynamic> json) {
-    username = json['username'];
-    email = json['email'];
-    password = json['password'];
-  }
-
-  Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['username'] = this.username;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    return data;
-  }
-
-  String toJson() {
-    return jsonEncode(toMap());
-  }
-}
-
-class UserRegistration {
-  String? email;
-  String? username;
-  String? password;
-  String? firstName;
-  String? lastName;
-
-  UserRegistration({this.email, this.password, this.firstName, this.lastName});
-
-  UserRegistration.fromMap(Map<String, dynamic> json) {
-    email = json['email'];
-    username = json['username'];
-    password = json['password'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-  }
-
-  Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
-    data['username'] = this.username;
-    data['password'] = this.password;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    return data;
+    return user;
   }
 }
