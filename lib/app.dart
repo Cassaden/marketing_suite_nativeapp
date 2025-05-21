@@ -9,7 +9,9 @@ import 'package:app/common/screens/loading.dart';
 import 'package:app/core/theme.dart';
 
 import 'package:app/features/auth/data/auth.repositories.dart';
-import 'package:app/features/auth/presentation/screens/login.dart';
+
+import 'package:app/features/auth/presentation/screens/main.dart';
+
 import 'package:app/features/auth/presentation/blocs/login/cubit.dart';
 
 class App extends StatefulWidget {
@@ -39,7 +41,7 @@ class _AppState extends State<App> {
                   state.loadingMessage ?? 'Please wait',
                 ),
                 LoginStatus.success => AppShellScreen(),
-                LoginStatus.failure => LoginScreen(),
+                LoginStatus.failure => AuthScreenManager(),
               },
         ),
       ),

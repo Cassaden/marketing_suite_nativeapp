@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:app/features/auth/presentation/screens/login.dart';
+import 'package:app/features/auth/presentation/navigator.dart';
 
 class AuthScreenManager extends StatefulWidget {
   const AuthScreenManager({super.key});
@@ -12,6 +12,6 @@ class AuthScreenManager extends StatefulWidget {
 class _AuthScreenManagerState extends State<AuthScreenManager> {
   @override
   Widget build(BuildContext context) {
-    return LoginScreen();
+    return AuthScreensNavigator();
   }
 }
