@@ -1,12 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 
-import '../../features/home.dart';
-import '../../features/campaigns.dart';
-import '../../features/contacts/presentation/screens/main.dart';
-import '../../features/messaging.dart';
-
-import 'app_shell/sidebar.dart';
-import 'app_shell/footer.dart';
+import 'sidenav_items.dart';
 
 class AppShellScreen extends StatefulWidget {
   const AppShellScreen({super.key});
@@ -16,59 +10,34 @@ class AppShellScreen extends StatefulWidget {
 }
 
 class _AppShellScreenState extends State<AppShellScreen> {
-  int _selectedIndex = 0;
-  final double _sidebarMaxWidth = 256;
-
-  final List<Widget Function()> _screens = [
-    HomeScreen.new,
-    MessagingScreen.new,
-    ContactsScreenManager.new,
-    CampaignsScreen.new,
-  ];
+  PaneDisplayMode displayMode = PaneDisplayMode.compact;
+  int topIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Row(
-          children: <Widget>[
-            AppSidebar(
-              maxWidth: _sidebarMaxWidth,
-              selectedIndex: _selectedIndex,
-              onDestinationSelected:
-                  (int index) => setState(() {
-                    _selectedIndex = index;
-                  }),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  Container(color: Theme.of(context).scaffoldBackgroundColor),
-                  Expanded(
-                    child: Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Column(
-                        children: [
-                          Container(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            height: Theme.of(context).appBarTheme.toolbarHeight,
-                          ),
-                          Expanded(
-                            child: AnimatedSwitcher(
-                              duration: Duration(seconds: 1),
-                              child: _screens[_selectedIndex](),
-                            ),
-                          ),
-                          AppFooter(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+    return NavigationView(
+      appBar: NavigationAppBar(
+        title: Text(
+          'Cassaden Marketing',
+          style: FluentTheme.of(context).typography.bodyLarge,
         ),
+        automaticallyImplyLeading: false,
+      ),
+      pane: NavigationPane(
+        selected: topIndex,
+        onItemPressed: (index) {
+          if (index == topIndex) {
+            if (displayMode == PaneDisplayMode.open) {
+              setState(() => this.displayMode = PaneDisplayMode.compact);
+            } else if (displayMode == PaneDisplayMode.compact) {
+              setState(() => this.displayMode = PaneDisplayMode.open);
+            }
+          }
+        },
+        onChanged: (index) => setState(() => topIndex = index),
+        displayMode: displayMode,
+        items: items,
+        footerItems: footerItems,
       ),
     );
   }

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 
 import 'package:app/core/layout/app_shell.dart';
-import 'package:app/core/layout/app_loading.dart';
+import 'package:app/common/screens/loading.dart';
 
 import 'package:app/core/theme.dart';
 import 'package:app/features/auth/data/auth.repositories.dart';
@@ -38,16 +38,16 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return FluentApp(
       title: 'Cassaden',
-      theme: themeData,
+      theme: fluentThemeData,
       home: _getEntryPointScreen(),
     );
   }
 
   _getEntryPointScreen() {
     return _isLoading
-        ? AppLoadingScreen()
+        ? LoadingScreen()
         : _isUserAuthenticated
         ? const AppShellScreen()
         : const LoginScreen();

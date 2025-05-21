@@ -98,7 +98,7 @@ class AuthRepository {
     return false;
   }
 
-  static Future<User> login() async {
+  static Future<User> login(UserLoginDetails) async {
     throw UnimplementedError();
   }
 }
