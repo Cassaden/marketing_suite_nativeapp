@@ -47,7 +47,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginState.failure(e));
       log("Failed to login user.", error: e, stackTrace: s, name: 'auth');
     } catch (e) {
-      emit(LoginState.initial());
+      emit(LoginState.failure(UserLoginFailedException(username)));
       rethrow;
     }
   }
