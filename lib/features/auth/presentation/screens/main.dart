@@ -29,7 +29,11 @@ class AuthScreensNavigator extends StatelessWidget {
           );
         } else if (settings.name == '/register') {
           return PageRouteBuilder<RegistrationScreen>(
-            pageBuilder: (_, _, _) => RegistrationScreen(),
+            pageBuilder:
+                (_, _, _) => ScaffoldPage(
+                  header: const Text('Register'),
+                  content: RegistrationScreen(),
+                ),
           );
         }
 

@@ -28,4 +28,18 @@ class LoginState extends Equatable {
     : this(LoginStatus.success, user: loggedInUser);
   LoginState.failure(AuthFeatureException error)
     : this(LoginStatus.failure, user: null, error: error);
+
+  LoginState copyWith({
+    LoginStatus? status,
+    User? user,
+    AuthFeatureException? error,
+    String? loadingMessage,
+  }) {
+    return LoginState(
+      status ?? this.status,
+      user: user ?? this.user,
+      error: error ?? this.error,
+      loadingMessage: loadingMessage ?? this.loadingMessage,
+    );
+  }
 }

@@ -38,6 +38,10 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
+  Future<void> clearError() async {
+    emit(state.copyWith(error: null));
+  }
+
   Future<void> login(String username, String password) async {
     try {
       emit(LoginState.loading());

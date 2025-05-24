@@ -27,6 +27,8 @@ class _AppState extends State<App> {
     return FluentApp(
       title: 'Cassaden',
       theme: fluentThemeData,
+      darkTheme: fluentThemeDataDarkMode,
+      themeMode: ThemeMode.dark,
       home: BlocProvider<LoginCubit>(
         create: (context) {
           final cubit = LoginCubit(AuthRepository());
