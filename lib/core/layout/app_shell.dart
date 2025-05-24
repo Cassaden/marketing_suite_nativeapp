@@ -1,5 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
+import 'package:app/common/widgets/dark_mode_switcher.dart';
+
 import 'sidenav_items.dart';
 
 class AppShellScreen extends StatefulWidget {
@@ -20,6 +22,11 @@ class _AppShellScreenState extends State<AppShellScreen> {
         title: Text(
           'Cassaden Marketing',
           style: FluentTheme.of(context).typography.bodyLarge,
+        ),
+        actions: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          alignment: Alignment.centerRight,
+          child: DarkModeSwitcher(),
         ),
         automaticallyImplyLeading: false,
       ),

@@ -27,11 +27,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<ThemeCubit>(
-          create: (context) => ThemeCubit(ThemeState.lightMode),
-        ),
-      ],
+      providers: [BlocProvider<ThemeCubit>(create: (context) => ThemeCubit())],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder:
             (context, state) => FluentApp(
