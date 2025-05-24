@@ -39,38 +39,10 @@ final getItems =
 
 final getFooterItems =
     (BuildContext context) => <NavigationPaneItem>[
-      PaneItemWidgetAdapter(
-        child: Builder(
-          builder: (context) {
-            if (NavigationView.of(context).displayMode ==
-                PaneDisplayMode.compact) {
-              return const FlutterLogo();
-            }
-            return Container(
-              constraints: const BoxConstraints(maxWidth: 200.0),
-              child: const Row(
-                children: [
-                  FlutterLogo(),
-                  SizedBox(width: 6.0),
-                  Text('This is a custom widget'),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
-
-      PaneItemExpander(
+      PaneItem(
         icon: const Icon(FluentIcons.account_management),
         title: const Text('Account'),
         body: const FeatureUnderConstructionScreen('Account'),
-        items: [
-          PaneItemAction(
-            title: const Text('test'),
-            icon: const Icon(FluentIcons.accept),
-            onTap: () => {},
-          ),
-        ],
       ),
       PaneItem(
         icon: const Icon(FluentIcons.settings),
