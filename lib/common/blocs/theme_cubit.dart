@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum ThemeState { darkMode, lightMode }
 
 class ThemeCubit extends Cubit<ThemeState> {
-  ThemeCubit() : super(ThemeState.lightMode) {
+  ThemeCubit() : super(ThemeState.darkMode) {
     _initialize();
   }
 
