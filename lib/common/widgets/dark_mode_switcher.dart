@@ -1,5 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:app/common/blocs/theme_cubit.dart';
+
 class DarkModeSwitcher extends StatefulWidget {
   const DarkModeSwitcher({super.key});
 
@@ -8,7 +12,15 @@ class DarkModeSwitcher extends StatefulWidget {
 }
 
 class _DarkModeSwitcherState extends State<DarkModeSwitcher> {
-  bool _isDarkMode = false;
+  late bool _isDarkMode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _isDarkMode =
+        context.read<ThemeCubit>().state == ThemeState.darkMode ? true : false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +28,15 @@ class _DarkModeSwitcherState extends State<DarkModeSwitcher> {
     return ToggleSwitch(
       checked: _isDarkMode,
       onChanged: (checked) {
-        setState(() => _isDarkMode = !_isDarkMode);
+        final newVal = !_isDarkMode;
+        final cubit = context.read<ThemeCubit>();
+
+        if (newVal) {
+          cubit.setDarkMode();
+        } else {
+          cubit.setLightMode();
+        }
+        setState(() => _isDarkMode = newVal);
       },
       knobBuilder:
           (context, states) => DarkModeToggleSwitchKnob(
@@ -56,10 +76,6 @@ class DarkModeToggleSwitchKnob extends StatelessWidget {
       height: 18.0,
       width:
           12.0 + (states.isHovered ? 2.0 : 0.0) + (states.isPressed ? 5.0 : 0),
-      /*decoration:
-          isDarkMode
-              ? style?.checkedKnobDecoration?.resolve(states)
-              : style?.uncheckedKnobDecoration?.resolve(states),*/
       child: Center(
         child: Icon(
           size: 12,
