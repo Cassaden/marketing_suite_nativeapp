@@ -27,3 +27,7 @@ class NoRefreshTokenFoundException extends AuthFeatureException {
 class NoLoggedInUserFoundException extends AuthFeatureException {
   NoLoggedInUserFoundException() : super('No logged in user found');
 }
+
+class InvalidAuthApiResponseException extends AuthFeatureException {
+  InvalidAuthApiResponseException() : super('Invalid API response');
+}

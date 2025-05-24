@@ -5,16 +5,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/features/auth/exceptions.dart';
 
 import 'package:app/features/auth/data/auth.models.dart';
+import 'package:app/features/auth/data/auth.services.dart';
 import 'package:app/features/auth/domain/auth.repositories.dart' as base;
 
 class AuthRepository implements base.AuthRepository {
-  static final AuthRepository _instance = AuthRepository._internal();
+  static final AuthRepository _instance = AuthRepository._(AuthApiProvider());
 
   factory AuthRepository() {
     return _instance;
   }
 
-  AuthRepository._internal();
+  AuthRepository._(this.apiProvider);
+
+  AuthApiProvider apiProvider;
 
   Future<User> getCurrentLoggedInUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -97,6 +100,26 @@ class AuthRepository implements base.AuthRepository {
   }
 
   Future<User> login(String username, String password) async {
-    throw UnimplementedError();
+    Map<String, dynamic> responseData = await apiProvider.login(
+      username,
+      password,
+    );
+
+    if (responseData.containsKey('status') &&
+        responseData['status'] == 'success') {
+      final data = responseData['data'];
+
+      final String accessToken = data['access'];
+      final String refreshToken = data['refresh'];
+      final User user = User.fromMap(data['user']);
+
+      setCurrentAccessToken(accessToken);
+      setCurrentRefreshToken(refreshToken);
+      setCurrentLoggedInUser(user);
+
+      return user;
+    }
+
+    throw InvalidAuthApiResponseException();
   }
 }

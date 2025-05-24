@@ -18,7 +18,12 @@ class ExecutingScreen extends StatelessWidget {
           ProgressRing(),
           Text(
             processTitle,
-            style: FluentTheme.of(context).typography.subtitle,
+            style: FluentTheme.of(context).typography.subtitle!.copyWith(
+              color:
+                  FluentTheme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
+            ),
           ),
         ],
       ),

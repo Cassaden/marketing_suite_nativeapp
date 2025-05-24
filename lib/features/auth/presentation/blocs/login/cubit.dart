@@ -49,8 +49,19 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginState.success(user));
     } on AuthFeatureException catch (e, s) {
       emit(LoginState.failure(e));
-      log("Failed to login user.", error: e, stackTrace: s, name: 'auth');
-    } catch (e) {
+      log(
+        "Failed to login user due to managed error.",
+        error: e,
+        stackTrace: s,
+        name: 'auth',
+      );
+    } catch (e, s) {
+      log(
+        "Failed to log a user in due to unexpected error.",
+        error: e,
+        stackTrace: s,
+        name: 'auth',
+      );
       emit(LoginState.failure(UserLoginFailedException(username)));
       rethrow;
     }

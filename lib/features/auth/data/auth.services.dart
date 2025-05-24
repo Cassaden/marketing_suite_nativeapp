@@ -4,33 +4,32 @@ import 'package:http/http.dart' as http;
 
 import 'package:app/core/constants/api_uris.dart';
 
-class AuthService {
-  static AuthService instance = AuthService._();
+import 'package:app/features/auth/exceptions.dart';
 
-  AuthService._();
+class AuthApiProvider {
+  static AuthApiProvider instance = AuthApiProvider._();
 
-  static AuthService getInstance() {
+  AuthApiProvider._();
+
+  factory AuthApiProvider() {
     return instance;
   }
 
-  Map<String, dynamic> login(String username, String password) {
-    http
-        .post(
-          Uri.parse(ApiUris.login),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode({'username': username, 'password': password}),
-        )
-        .then((response) {
-          if (response.statusCode == 200) {
-            final Map<String, dynamic> responseData = jsonDecode(response.body);
-            return responseData;
-          } else {
-            throw Exception('Failed to login');
-          }
-        });
-    throw Exception('Failed to login again.');
+  Future<Map<String, dynamic>> login(String username, String password) async {
+    final response = await http.post(
+      Uri.parse(ApiUris.login),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({'username': username, 'password': password}),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      return responseData;
+    } else {
+      throw UserLoginFailedException(username);
+    }
   }
 
   Map<String, dynamic> logout() {
