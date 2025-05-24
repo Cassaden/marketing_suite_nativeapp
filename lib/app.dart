@@ -27,7 +27,12 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider<ThemeCubit>(create: (context) => ThemeCubit())],
+      providers: [
+        BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
+        BlocProvider<LoginCubit>(
+          create: (context) => LoginCubit(AuthRepository())..getLoggedInUser(),
+        ),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder:
             (context, state) => FluentApp(
@@ -38,23 +43,18 @@ class _AppState extends State<App> {
                   state == ThemeState.lightMode
                       ? ThemeMode.light
                       : ThemeMode.dark,
-              home: BlocProvider<LoginCubit>(
-                create: (context) {
-                  final cubit = LoginCubit(AuthRepository());
-                  cubit.getLoggedInUser();
-                  return cubit;
-                },
-                child: BlocBuilder<LoginCubit, LoginState>(
-                  builder:
-                      (context, state) => switch (state.status) {
-                        LoginStatus.initial => LoadingScreen(),
+              home: BlocBuilder<LoginCubit, LoginState>(
+                builder:
+                    (context, state) => Container(
+                      child: switch (state.status) {
                         LoginStatus.loading => ExecutingScreen(
                           state.loadingMessage ?? 'Please wait',
                         ),
                         LoginStatus.success => AppShellScreen(),
-                        LoginStatus.failure => AuthScreenManager(),
+                        LoginStatus.failure ||
+                        LoginStatus.initial => AuthScreenManager(),
                       },
-                ),
+                    ),
               ),
             ),
       ),

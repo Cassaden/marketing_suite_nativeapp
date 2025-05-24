@@ -43,8 +43,8 @@ class _AppShellScreenState extends State<AppShellScreen> {
         },
         onChanged: (index) => setState(() => topIndex = index),
         displayMode: displayMode,
-        items: items,
-        footerItems: footerItems,
+        items: getItems(context),
+        footerItems: getFooterItems(context),
       ),
     );
   }

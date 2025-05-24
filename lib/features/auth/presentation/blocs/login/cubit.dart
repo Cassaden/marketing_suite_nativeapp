@@ -68,6 +68,8 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> logout() async {
-    emit(LoginState.loading(loadingMessage: 'Logging out'));
+    emit(LoginState.loading(loadingMessage: 'Signing out'));
+    await repository.logout();
+    emit(LoginState.initial());
   }
 }

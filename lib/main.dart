@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:app/app.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded(
-    () => runApp(App()),
+    () {
+      WidgetsFlutterBinding.ensureInitialized();
+      runApp(App());
+    },
     (e, s) => log(
       "Caught general error that wasn't handled correctly inside the app.",
       name: 'main',

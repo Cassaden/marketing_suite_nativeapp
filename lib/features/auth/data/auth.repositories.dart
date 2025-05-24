@@ -122,4 +122,10 @@ class AuthRepository implements base.AuthRepository {
 
     throw InvalidAuthApiResponseException();
   }
+
+  Future<void> logout() async {
+    await clearCurrentAccessToken();
+    await clearCurrentRefreshToken();
+    await clearCurrentLoggedInUser();
+  }
 }
