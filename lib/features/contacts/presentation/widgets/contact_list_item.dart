@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 
 import 'package:openapi/api.dart' as openapi;
 
@@ -11,9 +11,11 @@ class ContactListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(5),
-      child: Card.filled(
-        elevation: 20,
-        child: Center(child: Text(contact.phoneNumber)),
+      child: Card(
+        child: Container(
+          alignment: Alignment.centerLeft,
+          child: Text(contact.phoneNumber),
+        ),
       ),
     );
   }
